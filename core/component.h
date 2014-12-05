@@ -32,11 +32,7 @@
 
 #include <memory>
 
-#ifndef CRUCIBLE_H
 #include "crucible.h"
-#else
-#include "crucible.h"
-#endif
 
 namespace crucible {
 namespace engine {
@@ -45,7 +41,7 @@ namespace core {
 class Component {
 public:
   /* typdefs */
-  typedef struct { UInt bit_field[64]; } ComponentMap;
+  typedef struct { UInt bit_field[kMaxComponentBuckets]; } ComponentMap;
   typedef std::unique_ptr<Component> UPComponent;
   typedef std::shared_ptr<Component> SPComponent;
   

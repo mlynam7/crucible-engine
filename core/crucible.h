@@ -68,6 +68,11 @@ typedef std::uint32_t UInt;
 
 #endif
 
+// modify this value to provide more or less components in the engine.
+// the total number of component allowed is:
+// kMaxComponentBuckets * sizeof(UInt) * 8.
+const UInt kMaxComponentBuckets = 64;
+
 } // namespace core
 } // namespace engine
 } // namespace crucible

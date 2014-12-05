@@ -30,6 +30,8 @@
 #ifndef ENTITY_H
 #define	ENTITY_H
 
+#include <mutex>
+#include <queue>
 #include <memory>
 
 #include "component.h"
@@ -44,9 +46,11 @@ public:
   /* typedefs */
   typedef std::unique_ptr<Entity> UPEntity;
   typedef std::shared_ptr<Entity> SPEntity;
+  typedef std::queue<UInt> IdRecycleQueue;
   
   /* ctor */
   Entity();
+  explicit Entity(const Component::ComponentMap&);
   Entity(Entity&&);
   Entity(const Entity&) = delete;
   
@@ -56,13 +60,21 @@ public:
   Entity& operator=(Entity&&);
   Entity& operator=(const Entity&) = delete;
   
-  /*  */
+  /* functions */
+  void AddComponent(const UInt& bucket, const UInt& bit);
+  void RemoveComponent(const UInt& bucket, const UInt& bit);
+  const UInt& id() const { return id_; }
 private:
   Component::ComponentMap component_map_;
   UInt id_;
   
+  static IdRecycleQueue id_queue_;
+  static UInt id_counter_;
+  static std::mutex mtx_;
+  
   /* functions */
   static UInt CreateId();
+  static void ReclaimId(const UInt&);
 };
 
 } // namespace core
