@@ -1,12 +1,12 @@
 /* 
- * File:   entity.h
+ * File:   id_factory.cpp
  * Author: Matt Lynam <lynam.matt@gmail.com>
  *
- * Created on December 2, 2014
+ * Created on December 5, 2014
  * 
  * The MIT License (MIT)
  *
- * Copyright (c) December 2, 2014 Matt Lynam <lynam.matt@gmail.com>
+ * Copyright (c) December 5, 2014 Matt Lynam <lynam.matt@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,54 +27,42 @@
  * THE SOFTWARE.
  */
 
-#ifndef ENTITY_H
-#define	ENTITY_H
-
-#include <mutex>
-#include <queue>
-#include <memory>
-
 #include "id_factory.h"
-#include "component.h"
-#include "crucible.h"
 
-namespace crucible {
-namespace engine {
-namespace core {
+namespace cec = crucible::engine::core;
 
-class Entity {
-public:
-  /* typedefs */
-  typedef std::unique_ptr<Entity> UPEntity;
-  typedef std::shared_ptr<Entity> SPEntity;
-  typedef std::queue<UInt> IdRecycleQueue;
+cec::IdFactory::IdFactory() : id_counter_(0) {
   
-  /* ctor */
-  Entity();
-  explicit Entity(const Component::ComponentMap&);
-  Entity(Entity&&);
-  Entity(const Entity&) = delete;
-  
-  virtual ~Entity();
-  
-  /* operators */
-  Entity& operator=(Entity&&);
-  Entity& operator=(const Entity&) = delete;
-  
-  /* functions */
-  void AddComponent(const UInt& family, const UInt& bit);
-  void RemoveComponent(const UInt& family, const UInt& bit);
-  const UInt& id() const { return id_; }
-private:
-  Component::ComponentMap component_map_;
-  UInt id_;
-  
-  static IdFactory id_factory_;
-};
+}
 
-} // namespace core
-} // namespace engine
-} // namespace crucible
+cec::IdFactory::IdFactory(IdFactory&& other) 
+: id_counter_(other.id_counter_)
+, id_queue_(other.id_queue_) {
+  
+}
 
-#endif	/* ENTITY_H */
+cec::IdFactory& cec::IdFactory::operator =(IdFactory&& other) {
+  id_counter_ = other.id_counter_;
+  id_queue_ = other.id_queue_;
+  return *this;
+}
 
+cec::UInt cec::IdFactory::CreateId() {
+  UInt id;
+  mtx_.lock();
+  if (id_queue_.size() > 0) {
+    id = id_queue_.front();
+    id_queue_.pop();
+  }
+  else {
+    id = id_counter_++;
+  }
+  mtx_.unlock();
+  return id;
+}
+
+void cec::IdFactory::ReclaimId(const UInt& id) {
+  mtx_.lock();
+  id_queue_.push(id);
+  mtx_.unlock();
+}

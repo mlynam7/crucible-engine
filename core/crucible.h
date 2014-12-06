@@ -68,6 +68,8 @@ typedef std::uint32_t UInt;
 
 #endif
 
+typedef std::uintptr_t UIntPtr;
+
 // modify this value to provide more or less components in the engine.
 // the total number of component allowed is:
 // kMaxComponentBuckets * sizeof(UInt) * 8.

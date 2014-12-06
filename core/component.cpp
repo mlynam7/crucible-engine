@@ -31,10 +31,51 @@
 
 namespace cec = crucible::engine::core;
 
-cec::Component::Component() {
+cec::Component::Component() 
+: id_(id_factory_.CreateId()) {
     
+}
+cec::Component::Component(Component&& other) 
+  : id_(id_factory_.CreateId()) {
+  // invalidate the other
+  other.id_ = 0;
+}
+cec::Component::Component(const Component& other) 
+  : id_(id_factory_.CreateId())
+  , register_id_(other.register_id_) {
+  
+}
+
+cec::Component& cec::Component::operator =(Component&& other) {
+  
+}
+
+cec::Component& cec::Component::operator =(const Component&& other) {
+  
 }
 
 cec::Component::~Component() {
     
 }
+
+cec::Component::RegisterId cec::Component::RegisterComponent(const UInt& family, 
+                                                             const UInt& bit) {
+  // validate input
+  if (family > kMaxComponentBuckets)
+    // return invalid id.
+    return {};
+  if (component_register_.bit_field[family] & bit == bit)
+    // component is already registered to this family & bit, return invalid id.
+    return {};
+  // set bit
+  component_register_.bit_field[family] |= bit;  
+  return {family, bit};
+}
+
+void cec::Component::UnRegisterComponent(const UInt& family, const UInt& bit) {
+  if (family > kMaxComponentBuckets)
+    return;
+  component_register_.bit_field[family] &= ~bit;
+}
+
+cec::Component::ComponentMap cec::Component::component_register_ = { };

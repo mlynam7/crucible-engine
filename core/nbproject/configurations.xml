@@ -7,6 +7,7 @@
       <itemPath>component.h</itemPath>
       <itemPath>crucible.h</itemPath>
       <itemPath>entity.h</itemPath>
+      <itemPath>C:/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -17,6 +18,7 @@
                    projectFiles="true">
       <itemPath>component.cpp</itemPath>
       <itemPath>entity.cpp</itemPath>
+      <itemPath>C:/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -49,6 +51,16 @@
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib-crucible-engine-core.a</output>
         </archiverTool>
       </compileType>
+      <item path="C:/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="C:/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="component.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="component.h" ex="false" tool="3" flavor2="0">
@@ -67,22 +79,16 @@
         </linkerTool>
       </folder>
       <folder path="TestFiles/f1">
-        <cTool>
-          <incDir>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
-          </incDir>
-        </cTool>
         <ccTool>
           <incDir>
-            <pElem>.</pElem>
+            <pElem>C:/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
-          <linkerLibItems>
-            <linkerLibLibItem>-crucible-engine-core</linkerLibLibItem>
-          </linkerLibItems>
+          <linkerAddLib>
+            <pElem>C:/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/dist/Debug/Cygwin_4.x-Windows</pElem>
+          </linkerAddLib>
         </linkerTool>
       </folder>
       <item path="tests/test-entity.cpp" ex="false" tool="1" flavor2="0">
@@ -110,6 +116,16 @@
         <archiverTool>
         </archiverTool>
       </compileType>
+      <item path="C:/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="C:/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="component.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="component.h" ex="false" tool="3" flavor2="0">

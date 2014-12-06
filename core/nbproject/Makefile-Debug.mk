@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/1168552714/id_factory.o \
 	${OBJECTDIR}/component.o \
 	${OBJECTDIR}/entity.o
 
@@ -71,6 +72,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib-crucible-engine-core.a: ${OBJECTF
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib-crucible-engine-core.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib-crucible-engine-core.a
 
+${OBJECTDIR}/_ext/1168552714/id_factory.o: /cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1168552714
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1168552714/id_factory.o /cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp
+
 ${OBJECTDIR}/component.o: component.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -88,14 +94,27 @@ ${OBJECTDIR}/entity.o: entity.cpp
 .build-tests-conf: .build-conf ${TESTFILES}
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/test-entity.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} -l-crucible-engine-core -l-crucible-engine-core 
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} -l-crucible-engine-core -L/cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/dist/Debug/Cygwin_4.x-Windows 
 
 
 ${TESTDIR}/tests/test-entity.o: tests/test-entity.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/test-entity.o tests/test-entity.cpp
+	$(COMPILE.cc) -g -I/cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/test-entity.o tests/test-entity.cpp
 
+
+${OBJECTDIR}/_ext/1168552714/id_factory_nomain.o: ${OBJECTDIR}/_ext/1168552714/id_factory.o /cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1168552714
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/1168552714/id_factory.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -std=c++11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1168552714/id_factory_nomain.o /cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/_ext/1168552714/id_factory.o ${OBJECTDIR}/_ext/1168552714/id_factory_nomain.o;\
+	fi
 
 ${OBJECTDIR}/component_nomain.o: ${OBJECTDIR}/component.o component.cpp 
 	${MKDIR} -p ${OBJECTDIR}

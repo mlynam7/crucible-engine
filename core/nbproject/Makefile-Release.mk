@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/1168552714/id_factory.o \
 	${OBJECTDIR}/component.o \
 	${OBJECTDIR}/entity.o
 
@@ -71,6 +72,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcore.a: ${OBJECTFILES}
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcore.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcore.a
 
+${OBJECTDIR}/_ext/1168552714/id_factory.o: /cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1168552714
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1168552714/id_factory.o /cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp
+
 ${OBJECTDIR}/component.o: component.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -96,6 +102,19 @@ ${TESTDIR}/tests/test-entity.o: tests/test-entity.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/test-entity.o tests/test-entity.cpp
 
+
+${OBJECTDIR}/_ext/1168552714/id_factory_nomain.o: ${OBJECTDIR}/_ext/1168552714/id_factory.o /cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1168552714
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/1168552714/id_factory.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1168552714/id_factory_nomain.o /cygdrive/C/Users/mlynam/Documents/NetBeansProjects/crucible-engine/core/id_factory.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/_ext/1168552714/id_factory.o ${OBJECTDIR}/_ext/1168552714/id_factory_nomain.o;\
+	fi
 
 ${OBJECTDIR}/component_nomain.o: ${OBJECTDIR}/component.o component.cpp 
 	${MKDIR} -p ${OBJECTDIR}

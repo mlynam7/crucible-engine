@@ -32,13 +32,13 @@
 namespace cec = crucible::engine::core;
 
 cec::Entity::Entity() 
-: component_map_({}) 
-, id_(CreateId()) {   
+: component_map_({})
+, id_(id_factory_.CreateId()) {   
 }
 
 cec::Entity::Entity(const Component::ComponentMap& components)
   : component_map_(components)
-  , id_(CreateId()) {
+  , id_(id_factory_.CreateId()) {
 }
 
 cec::Entity::Entity(Entity&& other) 
@@ -51,7 +51,7 @@ cec::Entity::Entity(Entity&& other)
 
 cec::Entity::~Entity() {
   // reclaim the id
-  ReclaimId(id_);
+  id_factory_.ReclaimId(id_);
 }
 
 cec::Entity& cec::Entity::operator=(Entity&& other) {
@@ -63,38 +63,12 @@ cec::Entity& cec::Entity::operator=(Entity&& other) {
   return *this;
 }
 
-void cec::Entity::AddComponent(const UInt& bucket, const UInt& bit) {
+void cec::Entity::AddComponent(const UInt& family, const UInt& bit) {
   // TODO: confirm we won't attempt an out of range access of bit_field
-  component_map_.bit_field[bucket] |= bit;
+  component_map_.bit_field[family] |= bit;
 }
 
-void cec::Entity::RemoveComponent(const UInt& bucket, const UInt& bit) {
+void cec::Entity::RemoveComponent(const UInt& family, const UInt& bit) {
   // TODO: confirm we won't attempt an out of range access of bit_field
-  component_map_.bit_field[bucket] &= ~bit;
+  component_map_.bit_field[family] &= ~bit;
 }
-
-cec::UInt cec::Entity::CreateId() {
-  UInt id;
-  if (id_queue_.size() > 0) {
-    mtx_.lock();
-    id = id_queue_.front();
-    // remove reused id
-    id_queue_.pop();
-    mtx_.unlock();
-  }
-  else {
-    id = id_counter_++;
-  }
-  return id;
-}
-
-void cec::Entity::ReclaimId(const UInt& id) {
-  // TODO: lock
-  mtx_.lock();
-  id_queue_.push(id);
-  mtx_.unlock();
-}
-
-cec::Entity::IdRecycleQueue cec::Entity::id_queue_ = { };
-cec::UInt cec::Entity::id_counter_ = 1;
-std::mutex cec::Entity::mtx_;

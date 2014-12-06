@@ -1,12 +1,12 @@
 /* 
- * File:   component.h
+ * File:   id_factory.h
  * Author: Matt Lynam <lynam.matt@gmail.com>
  *
- * Created on December 2, 2014
+ * Created on December 5, 2014
  * 
  * The MIT License (MIT)
  *
- * Copyright (c) December 2, 2014 Matt Lynam <lynam.matt@gmail.com>
+ * Copyright (c) December 5, 2014 Matt Lynam <lynam.matt@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,55 +27,40 @@
  * THE SOFTWARE.
  */
 
-#ifndef COMPONENT_H
-#define	COMPONENT_H
+#ifndef ID_FACTORY_H
+#define	ID_FACTORY_H
 
-#include <utility>
-#include <memory>
+#include <queue>
+#include <mutex>
 
-#include "id_factory.h"
 #include "crucible.h"
 
 namespace crucible {
 namespace engine {
 namespace core {
 
-class Component {
+class IdFactory {
 public:
-  /* typdefs */
-  typedef struct { UInt bit_field[kMaxComponentBuckets]; } ComponentMap;
-  typedef std::unique_ptr<Component> UPComponent;
-  typedef std::shared_ptr<Component> SPComponent;
-  typedef std::pair<UInt, UInt> RegisterId;
+  typedef std::queue<UInt> IdRecycleQueue;
+ 
+  IdFactory();
+  IdFactory(IdFactory&& other);
+  IdFactory(const IdFactory&) = delete;
   
-  /* ctors */
-  Component();
-  Component(Component&&);
-  Component(const Component&);
+  IdFactory& operator=(IdFactory&& other);
+  IdFactory& operator=(const IdFactory&) = delete;
   
-  /* operators */
-  Component& operator=(Component&&);
-  Component& operator=(const Component&&);
-  
-  virtual ~Component();
-  
-  /* functions */
-  const RegisterId& register_id() const { return register_id_; }
-  const UInt& id() const { return id_; }
-protected:
-  RegisterId register_id_;
-
-  static RegisterId RegisterComponent(const UInt& family, const UInt& bit);
-  static void UnRegisterComponent(const UInt& family, const UInt& bit);
-private:  
-  UInt id_;
-  static ComponentMap component_register_;
-  static IdFactory id_factory_;
+  UInt CreateId();
+  void ReclaimId(const UInt&);
+private:
+  IdRecycleQueue id_queue_;
+  UInt id_counter_;
+  std::mutex mtx_;
 };
 
-} // namespace core
-} // namespace engine
-} // namespace crucible
+} // core
+} // engine
+} // crucible
 
-#endif	/* COMPONENT_H */
+#endif	/* ID_FACTORY_H */
 
